@@ -1,0 +1,31 @@
+services:
+
+  short-url-backend:
+    build:
+      context: ./Short-URL
+    env_file:
+      - ./Short-URL/.env
+    container_name: short-url-backend
+    depends_on:
+      - mongoDB
+    ports: 
+      - "8020:8020"
+      - "9229:9229"
+    volumes:
+      - ./Short-URL:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: nodemon -L index.js
+
+  mongoDB:
+    image: mongo:6
+    container_name: short-url-mongo
+    ports:
+      - "27017:27017"
+  
+  redis:
+    image: redis:7
+    container_name: short-url-redis
+    ports:
+      - "6379:6379"
