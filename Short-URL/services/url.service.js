@@ -1,12 +1,13 @@
 import {nanoid} from "nanoid";
 import URL from "../Models/url.js";
 import * as cacheService from "./cache.service.js";
+import { ApiError } from "../utils/apiError.js";
 
 
 export const generate = async (redirectUrl) => {
     // validate input
     if(!redirectUrl) {
-        throw new Error("Redirect URL is required");
+        throw new ApiError(400, "Redirect URL is required");
     }
 
     // check redis
@@ -88,7 +89,7 @@ export const redirect = async (shortId) => {
     const entry = await URL.findOne({shortId});
 
     if(!entry) {
-        throw new Error("URL not found");
+        throw new ApiError(404 ,"URL not found");
     } 
 
     // add in cache for future requests
