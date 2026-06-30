@@ -21,7 +21,7 @@ export const generateShortUrl = async (req, res) => {
 
 export const getRedirectUrl = async (req, res) => {
     try {
-        const result = await urlService.redirect(req.params.shortId);
+        const result = await urlService.redirect(req.params.shortId, req);
         
         return res
             .status(result.status)

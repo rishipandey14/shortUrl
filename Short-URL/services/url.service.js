@@ -2,6 +2,7 @@ import {nanoid} from "nanoid";
 import URL from "../Models/url.js";
 import * as cacheService from "./cache.service.js";
 import { ApiError } from "../utils/apiError.js";
+import { addVisit } from "../utils/helperFunctions.js";
 
 
 export const generate = async (redirectUrl) => {
@@ -58,25 +59,18 @@ export const generate = async (redirectUrl) => {
     return {
         status: 201,
         data: {
-            shortId: shortId,
+            shortId: doc.shortId,
         },
     };
 };
 
-export const redirect = async (shortId) => {
+export const redirect = async (shortId, req) => {
     // check redis
     const cachedRedirectUrl = await cacheService.getRedirectUrl(shortId);
 
     if(cachedRedirectUrl) {
         // update visit history
-        await URL.updateOne(
-            {shortId: shortId},
-            {
-                $push: {
-                    visitHistory: {timestamp: Date.now()}
-                }
-            }
-        );
+        await addVisit(shortId, req);
         return {
             status: 302,
             data: {
@@ -96,14 +90,7 @@ export const redirect = async (shortId) => {
     await cacheService.cacheRedirectUrl(shortId, entry.redirectUrl);
 
     // update visit history
-    await URL.updateOne(
-        {shortId: shortId},
-        {
-            $push: {
-                visitHistory: {timestamp: Date.now()}
-            }
-        }
-    )
+    await addVisit(shortId, req);
     return {
         status: 302,
         data: {
