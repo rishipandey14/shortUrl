@@ -14,7 +14,7 @@ export async function getRedirectUrl(shortId) {
     return client.get(`url:${shortId}`)
 };
 
-export async function cacheRedirectUrl(redirectUrl, shortId) {
+export async function cacheRedirectUrl(shortId, redirectUrl) {
     return client.set(`url:${shortId}`, redirectUrl, { EX: TTL });
 };
 

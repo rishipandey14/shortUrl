@@ -52,7 +52,7 @@ export const generate = async (redirectUrl) => {
     // save in redis
     await Promise.all([
         cacheService.cacheShortId(redirectUrl, shortId),
-        cacheService.cacheRedirectUrl(redirectUrl, shortId)
+        cacheService.cacheRedirectUrl(shortId, redirectUrl)
     ]);
 
     return {
@@ -93,7 +93,7 @@ export const redirect = async (shortId) => {
     } 
 
     // add in cache for future requests
-    await cacheService.cacheRedirectUrl(entry.redirectUrl, shortId);
+    await cacheService.cacheRedirectUrl(shortId, entry.redirectUrl);
 
     // update visit history
     await URL.updateOne(
