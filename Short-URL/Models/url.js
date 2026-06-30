@@ -10,7 +10,18 @@ const urlSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    visitHistory: [{ timestamp: { type: Number } }],
+    visitHistory: [
+        { 
+            timestamp: Date,
+            ip: String,
+            browser: String,
+            os: String,
+            device: String,
+            country: String,
+            city: String,
+            referrer: String,
+        }
+    ],
     }, 
     {timestamps: true}
 );
