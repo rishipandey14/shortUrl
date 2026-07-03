@@ -1,5 +1,0 @@
-services:
-  short-url-backend:
-    command: npm run debug
-    ports:
-      - "9229:9229"

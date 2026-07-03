@@ -3,6 +3,9 @@ import { connectDB } from './config/database.js';
 import urlRouter from './Routes/url.route.js';
 import { connectRedis } from './config/redis.js';
 import analyticsRouter from './Routes/analytics.route.js';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
